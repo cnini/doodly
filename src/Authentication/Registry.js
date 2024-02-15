@@ -5,7 +5,7 @@ import { auth } from "../../firebase"
 import { useState } from "react"
 import { addUser } from "../Repository/UserRepository"
 
-export const Registry = () => {
+export const Registry = ({ navigation }) => {
     const { user, setUserData } = User()
 
     const handleRegistration = async () => {
@@ -16,6 +16,8 @@ export const Registry = () => {
         user.uid = uid
 
         addUser(user)
+
+        navigation.navigate('Login')
     }
 
     return (
