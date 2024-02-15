@@ -2,8 +2,25 @@ import { StyleSheet } from "react-native"
 
 export const styles = StyleSheet.create({
     registryContainer: {
+        width: '100%',
+        paddingHorizontal: 50,
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
+        justifyContent: 'center'
+    },
+
+    inputLabel: {
+        fontSize: 12,
+        textTransform: 'uppercase',
+        marginStart: 10
+    },
+
+    inputBox: {
+        height: 40,
+        borderWidth: 1,
+        padding: 10,
+        marginTop: 5,
+        marginBottom: 20,
+        backgroundColor: '#fff',
+        borderRadius: 20
     },
 })
