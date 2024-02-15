@@ -12,35 +12,52 @@ export const styles = StyleSheet.create({
         maxWidth: 250,
         maxHeight: 150,
     },
+    backgroundImage: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+    },
     inputView: {
         borderColor: "#C9C9C9",
-        borderRadius: 30,
         width: "70%",
-        height: 45,
+        height: 55,
         marginBottom: 20,
         alignItems: "center",
-        backgroundColor: "#ECECEC",
+        
     },
     TextInput: {
         height: 50,
         flex: 1,
         padding: 10,
         marginLeft: 20,
+        backgroundColor: "#ECECEC",
+        borderRadius: 30,
+        width: "80%",
     },
     forgot_button: {
         height: 30,
         marginBottom: 30,
     },
     loginBtn: {
-        width: "50%",
-        borderRadius: 12,
+        width: "40%",
+        borderRadius: 90,
         height: 50,
         alignItems: "center",
         justifyContent: "center",
-        marginTop: 40,
-        backgroundColor: "#FECAE9",
+        marginTop: 30,
+        backgroundColor: "#d2bbf3",
     },
     loginText: {
         color: "white",
+    },
+    signUp: {
+        marginTop: 30,
+        flexDirection: "row",
+    },
+    signUpText: {
+        color: "#974DFF",
+    },
+    label: {
+        textAlign: "left",
     },
 })
