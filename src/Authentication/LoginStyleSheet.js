@@ -23,4 +23,16 @@ export const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderRadius: 20
     },
+
+    linkZone: {
+        marginTop: 20,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+
+    link: {
+        marginStart: 5,
+        color: 'purple'
+    },
 })

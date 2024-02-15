@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const userModel = () => {
+export const userModel = () => {
     return {
         uid: '',
         firstname: '',

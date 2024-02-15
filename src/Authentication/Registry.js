@@ -1,4 +1,5 @@
 import { Text, View, TextInput, Button } from "react-native"
+import { Link } from '@react-navigation/native'
 import { styles } from "./RegistryStyleSheet"
 import { User } from "../Model/User"
 import { auth } from "../../firebase"
@@ -43,6 +44,11 @@ export const Registry = ({ navigation }) => {
             <TextInput style={styles.inputBox} onChangeText={(v) => setUserData('city', v)}/>
 
             <Button title="S'inscrire" onPress={handleRegistration}/>
+
+            <View style={styles.linkZone}>
+                <Text>Vous avez déjà un compte ?</Text>
+                <Link style={styles.link} to={{ screen: 'Login' }}>Connectez-vous !</Link>
+            </View>
         </View>
     )
 }

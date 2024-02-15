@@ -1,4 +1,5 @@
-import { Text, View, TextInput, Button } from "react-native"
+import { Text, View, TextInput, Button, Pressable } from "react-native"
+import { Link } from '@react-navigation/native'
 import { styles } from "./LoginStyleSheet"
 import { useState } from "react"
 import { auth } from "../../firebase"
@@ -27,6 +28,11 @@ export const Login = ({ navigation }) => {
             <TextInput style={styles.inputBox} secureTextEntry={true} onChangeText={setPassword}/>
 
             <Button title="Se connecter" onPress={handleSignin}/>
+            
+            <View style={styles.linkZone}>
+                <Text>Vous n'avez pas de compte ?</Text>
+                <Link style={styles.link} to={{ screen: 'Registry' }}>Inscrivez-vous !</Link>
+            </View>
         </View>
     )
 }
