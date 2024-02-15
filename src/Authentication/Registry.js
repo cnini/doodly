@@ -2,7 +2,6 @@ import { Text, View, TextInput, Button } from "react-native"
 import { styles } from "./RegistryStyleSheet"
 import { User } from "../Model/User"
 import { auth } from "../../firebase"
-import { useState } from "react"
 import { addUser } from "../Repository/UserRepository"
 
 export const Registry = ({ navigation }) => {
