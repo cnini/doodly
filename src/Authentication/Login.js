@@ -3,6 +3,7 @@ import { Link } from '@react-navigation/native'
 import { styles } from "./LoginStyleSheet"
 import { useState } from "react"
 import { auth } from "../../firebase"
+import { getUserByUid } from "../Repository/UserRepository"
 
 export const Login = ({ navigation }) => {
     const [email, setEmail] = useState("")
@@ -13,7 +14,13 @@ export const Login = ({ navigation }) => {
             auth.signInWithEmailAndPassword(email, password)
             .then(() => {
                 console.log("Utilisateur connecté")
-                navigation.navigate('Home')
+
+                getUserByUid(auth.currentUser.uid)
+                .then((res) => {
+                    console.log('Utilisateur trouvé : ' + res.email)
+                })
+
+                navigation.navigate('Profile')
             })
             .catch((e) => console.log(e))
         }

@@ -2,15 +2,13 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { NavigationContainer, useTheme } from "@react-navigation/native"
 import { FontAwesome, FontAwesome6 } from '@expo/vector-icons'
 import { auth } from "../../firebase"
-import { useEffect } from "react"
 
 import { Home } from "../Home/Home"
 import { Login } from "../Authentication/Login"
 import { Registry } from "../Authentication/Registry"
+import { Profile } from "../Profile/Profile"
 import { Cart } from "../Cart/Cart"
-import { useDispatch } from "react-redux"
-import { setCurrentUser } from "../Redux/UserSlice"
-import { getUserByUid } from "../Repository/UserRepository"
+import { useEffect, useState } from "react"
 
 const Tab = createBottomTabNavigator()
 
@@ -28,25 +26,19 @@ const AuthenticationTabs = () => {
                 component={Registry}
                 options={{ title: "Inscription" }}
             />
+            
+            <Tab.Screen 
+                name="Profile" 
+                component={Profile}
+                options={{ title: "Mon compte" }}
+            />
         </Tab.Navigator>
     )
 }
 
 export const Navigation = () => {
-    const dispatch = useDispatch()
-
     const theme = useTheme()
     theme.colors.secondaryContainer = "transparent"
-
-    useEffect(() => {
-        if (auth.currentUser) {
-            getUserByUid(auth.currentUser.uid)
-            .then((res) => {
-                console.log('Utilisateur trouvé : ' + res.email)
-                dispatch(setCurrentUser(res))
-            })
-        }
-    }, [])
 
     return (
         <NavigationContainer>
@@ -88,38 +80,19 @@ export const Navigation = () => {
                     }}
                 />
 
-                {
-                    !auth.currentUser ? (
-                        <Tab.Screen 
-                            name="Authentication" 
-                            component={AuthenticationTabs}
-                            options={{
-                                title: 'Connexion / Inscription',
-                                tabBarLabel: 'Connexion / Inscription',
-                                tabBarIcon: ({ color }) => (
-                                    <FontAwesome name="user-circle" color={color} size={18} />
-                                ),
-                                tabBarActiveTintColor: "purple",
-                                tabBarInactiveTintColor: "gray",
-                            }}
-                        />
-                    ) : (
-                        <Tab.Screen 
-                            name="HomeToo" 
-                            component={Home}
-                            options={{
-                                title: "Accueil",
-                                tabBarLabel: 'Accueil',
-                                tabBarIcon: ({ color }) => (
-                                    <FontAwesome6 name="house" color={color} size={18} />
-                                ),
-                                tabBarActiveTintColor: "purple",
-                                tabBarInactiveTintColor: "gray"
-                            }}
-                        />
-                    )
-                }
-
+                <Tab.Screen 
+                    name="Authentication" 
+                    component={AuthenticationTabs}
+                    options={{
+                        title: 'Mon compte',
+                        tabBarLabel: 'Mon compte',
+                        tabBarIcon: ({ color }) => (
+                            <FontAwesome name="user-circle" color={color} size={18} />
+                        ),
+                        tabBarActiveTintColor: "purple",
+                        tabBarInactiveTintColor: "gray",
+                    }}
+                />
             </Tab.Navigator>
         </NavigationContainer>
     )
