@@ -7,9 +7,9 @@
     "icon": "./assets/icondoodly.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.gif",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#350B72"
+      "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": [
       "**/*"
