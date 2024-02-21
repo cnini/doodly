@@ -1,11 +1,9 @@
-import { authSlice } from "./src/Redux/authSlice";
-import { cartSlice } from "./src/Redux/cartSlice";
+// import { UserSlice } from "./src/Redux/UserSlice";
 
-const { configureStore } = require("@reduxjs/toolkit");
+// const { configureStore } = require("@reduxjs/toolkit");
 
-export const store = configureStore({
-    reducer: {
-        auth: authSlice.reducer,
-        cart: cartSlice.reducer
-    }
-})
+// export const store = configureStore({
+//     reducer: {
+//         user: UserSlice.reducer
+//     }
+// })
