@@ -1,14 +1,12 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { NavigationContainer, useTheme } from "@react-navigation/native"
 import { FontAwesome, FontAwesome6 } from '@expo/vector-icons'
-import { auth } from "../../firebase"
 
 import { Home } from "../Home/Home"
 import { Login } from "../Authentication/Login"
 import { Registry } from "../Authentication/Registry"
 import { Profile } from "../Profile/Profile"
 import { Cart } from "../Cart/Cart"
-import { useEffect, useState } from "react"
 
 const Tab = createBottomTabNavigator()
 
