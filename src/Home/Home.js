@@ -1,4 +1,4 @@
-import { Text, View, ScrollView, Pressable } from "react-native"
+import { Text, View, ScrollView, Pressable, Image } from "react-native"
 import { styles } from "./HomeStyleSheet"
 import { ProductCard } from "../Components/ProductCard"
 import { useState } from "react"
@@ -94,6 +94,8 @@ export const Home = ({ navigation }) => {
 
     return (
         <View style={styles.homeContainer}>
+            <Image style={styles.backgroundImage} source={require("../../assets/login.png")}/>
+            <Text style={styles.homeTitle}>Choisis les stickers de ton choix</Text>
             <ScrollView>
                 <View style={styles.productContainer}>
                     {

@@ -1,12 +1,23 @@
 import { StyleSheet } from "react-native"
-import { auth } from "../../firebase"
 
 export const styles = StyleSheet.create({
     homeContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingTop: 50
+    },
+
+    backgroundImage: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+    },
+
+    homeTitle: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        marginTop: 80,
+        marginBottom: 20
     },
 
     productContainer: {
@@ -14,7 +25,8 @@ export const styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'space-between',
         paddingHorizontal: 15,
-        paddingBottom: 80
+        paddingBottom: 80,
+        marginTop: 20
     },
 
     homeButton: {
