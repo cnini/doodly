@@ -1,5 +1,4 @@
 import { fireDB } from "../../firebase"
-import { userModel } from "../Model/User"
 
 export const addUser = (user) => {
     fireDB.collection('user').add(user)
