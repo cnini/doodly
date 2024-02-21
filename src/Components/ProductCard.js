@@ -1,23 +1,32 @@
 import { StyleSheet, Image, View, Text, Pressable } from "react-native"
 import { FontAwesome6 } from '@expo/vector-icons'
 import { useState } from "react"
+import { auth } from "../../firebase"
 
-export const ProductCard = ({ image }) => {
+export const ProductCard = ({ productIndex, product, handleTotalCount }) => {
     const [count, setCount] = useState(0)
 
     const incrementCount = () => {
-        setCount(count + 1)
+        setCount(prevCount => {
+            const newCount = prevCount + 1
+            handleTotalCount(productIndex, 1)
+            return newCount
+        })
     }
 
     const decrementCount = () => {
-        setCount(count - 1)
+        setCount(prevCount => {
+            const newCount = prevCount - 1
+            handleTotalCount(productIndex, -1)
+            return newCount
+        })
     }
 
     return (
         <View style={styles.productCard}>
-            <Image style={styles.image} source={image.image}/>
-            <Text style={styles.name}>{image.name}</Text>
-            <Text style={styles.price}>{image.price}€ /sticker</Text>
+            <Image style={styles.image} source={product.image}/>
+            <Text style={styles.name}>{product.name}</Text>
+            <Text style={styles.price}>{product.price}€ /sticker</Text>
 
             <View style={styles.actions}>
                 <Pressable onPress={decrementCount} disabled={count === 0}>
