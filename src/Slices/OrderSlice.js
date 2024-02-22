@@ -7,7 +7,10 @@ export const orderSlice = createSlice({
         storeOrder: (state, action) => {
             state.push(action.payload)
         },
+        resetOrders: (state, action) => {
+            return []
+        }
     }
 })
 
-export const { storeOrder } = orderSlice.actions
+export const { storeOrder, resetOrders } = orderSlice.actions

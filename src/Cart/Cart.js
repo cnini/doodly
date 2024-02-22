@@ -5,7 +5,10 @@ import { useState } from "react"
 import { getAllOrderByUserUid } from "../Repository/OrderRepository"
 import { auth } from "../../firebase"
 import { OrderCard } from "../Components/OrderCard"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { setCurrentUser } from "../Slices/CurrentUserSlice"
+import { storeOrder } from "../Slices/OrderSlice"
+import { getUserByUid } from "../Repository/UserRepository"
 
 export const Cart = () => {
     const currentUser = useSelector(state => state.currentUser)
@@ -15,7 +18,7 @@ export const Cart = () => {
     const [previousOrders, setPreviousOrders] = useState([])
 
     useEffect(() => {
-        if (currentUser !== undefined) {
+        if (currentUser && orders) {
             let getCurrentOrders = []
             let getPreviousOrders = []
             
@@ -44,7 +47,7 @@ export const Cart = () => {
                     </Text>
                     <View style={styles.orderCardsContainer}>
                         {
-                            currentOrders.length > 0 ? (
+                            currentOrders.length > 0 && currentOrders !== undefined ? (
                                 currentOrders.map(
                                     (currentOrder, index) => {
                                         return (
@@ -62,7 +65,7 @@ export const Cart = () => {
                     </Text>
                     <View style={styles.orderCardsContainer}>
                         {
-                            previousOrders.length > 0 ? (
+                            previousOrders.length > 0 && previousOrders !== undefined ? (
                                 previousOrders.map(
                                     (previousOrder, index) => {
                                         return (

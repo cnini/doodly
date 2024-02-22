@@ -3,7 +3,7 @@ import { styles } from "./ProfileStyleSheet"
 import { auth } from "../../firebase"
 import { useDispatch, useSelector } from "react-redux"
 import { resetCurrentUser } from "../Slices/CurrentUserSlice"
-import { useEffect } from "react"
+import { resetOrders } from "../Slices/OrderSlice"
 
 export const Profile = ({ navigation }) => {
     const dispatch = useDispatch()
@@ -13,6 +13,8 @@ export const Profile = ({ navigation }) => {
         auth.signOut()
             .then(() => {
                 dispatch(resetCurrentUser())
+                dispatch(resetOrders())
+                
                 console.log("Utilisateur déconnecté")
 
                 navigation.navigate('Login')
