@@ -7,12 +7,15 @@ import { Order } from "../Model/Order"
 import { addOrder, getLastOrderNumber } from "../Repository/OrderRepository"
 import { useDispatch, useSelector } from "react-redux"
 import { updateQuantity } from "../Slices/ProductSlice"
+import { storeOrder } from "../Slices/OrderSlice"
 
 export const Home = ({ navigation }) => {
     const dispatch = useDispatch()
+    const currentUser = useSelector((state) => state.currentUser)
     const products = useSelector((state) => state.product)
+    const orders = useSelector((state) => state.order)
 
-    const { order, setOrderData } = Order()
+    const { order } = Order()
 
     const [totalCount, setTotalCount] = useState(0)
 
@@ -23,21 +26,31 @@ export const Home = ({ navigation }) => {
 
     const handleCreateOrder = async () => {
         try {
-            setOrderData('userUid', auth.currentUser.uid);
-    
-            const lastOrderNumber = await getLastOrderNumber(auth.currentUser.uid)
-            
-            const newOrderNumber = '000' + (parseInt(lastOrderNumber, 10) + 1).toString();
-    
-            setOrderData('number', newOrderNumber)
-    
-            const images = products.filter(product => product.quantity > 0).map((product, index) => {
-                return { key: index, quantity: product.quantity, price: (product.quantity * product.price) }
-            })
-    
-            setOrderData('images', images)
-    
-            addOrder(order)
+            const newOrder = { ...order }
+
+            newOrder.userUid = currentUser.uid
+
+            const lastOrderNumber = await getLastOrderNumber(currentUser.uid)
+            const newOrderNumber = lastOrderNumber 
+                ? (parseInt(lastOrderNumber, 10) + 1).toString().padStart(3, '0')
+                : '0001'
+
+            newOrder.number = newOrderNumber
+
+            products
+            .filter(p => parseInt(p.quantity, 10) > 0)
+            .map(
+                product => {
+                    newOrder.images.push({ 
+                        id: product.id, 
+                        quantity: product.quantity, 
+                        price: (product.quantity * product.price) 
+                    })
+                }
+            )
+
+            addOrder(newOrder)
+            dispatch(storeOrder(newOrder))
     
             navigation.navigate('Cart')
         } catch (error) {

@@ -5,21 +5,22 @@ import { useState } from "react"
 import { getAllOrderByUserUid } from "../Repository/OrderRepository"
 import { auth } from "../../firebase"
 import { OrderCard } from "../Components/OrderCard"
+import { useSelector } from "react-redux"
 
 export const Cart = () => {
+    const currentUser = useSelector(state => state.currentUser)
+    const orders = useSelector(state => state.order)
+
     const [currentOrders, setCurrentOrders] = useState([])
     const [previousOrders, setPreviousOrders] = useState([])
 
     useEffect(() => {
-        getAllOrderByUserUid(auth.currentUser.uid)
-        .then((res) => {
+        if (currentUser !== undefined) {
             let getCurrentOrders = []
             let getPreviousOrders = []
             
-            res.map(
-                (r) => {
-                    const order = r.data()
-
+            orders.forEach(
+                (order) => {
                     if (order.status === "pending") {
                         getCurrentOrders.push(order)
                     } else {
@@ -30,8 +31,8 @@ export const Cart = () => {
 
             setCurrentOrders(getCurrentOrders)
             setPreviousOrders(getPreviousOrders)
-        })
-    }, [])
+        }
+    }, [currentUser, orders])
 
     return (
         <View style={styles.cartContainer}>
@@ -43,15 +44,16 @@ export const Cart = () => {
                     </Text>
                     <View style={styles.orderCardsContainer}>
                         {
-                            currentOrders.map(
-                                (currentOrder, index) => {
-                                    return (
-                                        <OrderCard key={index}
-                                            orderIndex={index + 1}
-                                            orderCard={currentOrder} />
-                                    )
-                                }
-                            )
+                            currentOrders.length > 0 ? (
+                                currentOrders.map(
+                                    (currentOrder, index) => {
+                                        return (
+                                            <OrderCard key={index}
+                                                orderCard={currentOrder} />
+                                        )
+                                    }
+                                )
+                            ) : (<Text>Pas de commande</Text>)
                         }
                     </View>
 
@@ -60,15 +62,16 @@ export const Cart = () => {
                     </Text>
                     <View style={styles.orderCardsContainer}>
                         {
-                            previousOrders.map(
-                                (previousOrder, index) => {
-                                    return (
-                                        <OrderCard key={index}
-                                            orderIndex={index}
-                                            orderCard={previousOrder} />
-                                    )
-                                }
-                            )
+                            previousOrders.length > 0 ? (
+                                previousOrders.map(
+                                    (previousOrder, index) => {
+                                        return (
+                                            <OrderCard key={index}
+                                                orderCard={previousOrder} />
+                                        )
+                                    }
+                                )
+                            ) :  (<Text>Pas de commande</Text>)
                         }
                     </View>
                 </View>

@@ -25,9 +25,11 @@ export const OrderCard = ({ orderCard }) => {
     const showDetail = () => {
         return orderCard.images.map(
             (image) => {
+                const name = products.filter(p => p.id === image.id)[0].name
+
                 return (
-                    <Text key={image.key}>
-                        {image.quantity} x Sticker "{products[image.key].name}"
+                    <Text key={image.id}>
+                        {image.quantity} x Sticker "{name}"
                     </Text>
                 )
             }
@@ -65,7 +67,7 @@ export const styles = StyleSheet.create({
     orderCard: {
         borderRadius: 20,
         width: 300,
-        height: 200,
+        height: 'auto',
         paddingVertical: 15,
         paddingHorizontal: 20,
         marginBottom: 30,
@@ -90,7 +92,7 @@ export const styles = StyleSheet.create({
         backgroundColor: '#000',
         paddingVertical: 10,
         borderRadius: 50,
-        marginTop: 'auto',
+        marginTop: 10,
     },
 
     orderCardButtonText: {
