@@ -2,6 +2,7 @@ import { useState } from "react";
 
 export const orderModel = () => {
     return {
+        number: '',
         images: [],
         userUid: '',
         status: 'pending',

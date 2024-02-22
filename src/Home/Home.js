@@ -4,7 +4,7 @@ import { ProductCard } from "../Components/ProductCard"
 import { useState } from "react"
 import { auth } from "../../firebase"
 import { Order } from "../Model/Order"
-import { addOrder } from "../Repository/OrderRepository"
+import { addOrder, getLastOrderNumber } from "../Repository/OrderRepository"
 
 export const Home = ({ navigation }) => {
     const { order, setOrderData } = Order()
@@ -79,17 +79,28 @@ export const Home = ({ navigation }) => {
         setTotalCount(previousTotalCount => previousTotalCount + value)
     }
 
-    const handleCreateOrder = () => {
-        setOrderData('userUid', auth.currentUser.uid)
-
-        const images = products.filter(product => product.quantity > 0).map((product, index) => {
-            return { key: index, quantity: product.quantity, price: (product.quantity * product.price) }
-        })
-
-        setOrderData('images', images)
-        addOrder(order)
-
-        navigation.navigate('Cart')
+    const handleCreateOrder = async () => {
+        try {
+            setOrderData('userUid', auth.currentUser.uid);
+    
+            const lastOrderNumber = await getLastOrderNumber(auth.currentUser.uid)
+            
+            const newOrderNumber = '000' + (parseInt(lastOrderNumber, 10) + 1).toString();
+    
+            setOrderData('number', newOrderNumber)
+    
+            const images = products.filter(product => product.quantity > 0).map((product, index) => {
+                return { key: index, quantity: product.quantity, price: (product.quantity * product.price) }
+            })
+    
+            setOrderData('images', images)
+    
+            addOrder(order)
+    
+            navigation.navigate('Cart')
+        } catch (error) {
+            console.error("Erreur lors de la création de la commande :", error)
+        }
     }
 
     return (
