@@ -1,68 +1,11 @@
 import { StyleSheet, Image, View, Text, Pressable } from "react-native"
-import { FontAwesome6 } from '@expo/vector-icons'
-import { useState } from "react"
-import { Order } from "../Model/Order"
 import { updateOrder } from "../Repository/OrderRepository"
+import { useDispatch, useSelector } from "react-redux"
+import { updateStoredOrder } from "../Slices/OrderSlice"
 
 export const OrderCard = ({ orderCard }) => {
-    const [products, setProducts] = useState([
-        {
-            image: require('../../assets/images/blossom.png'),
-            name: "Belle - Les Supers Nanas",
-            price: 0.75,
-            quantity: 0
-        },
-        {
-            image: require('../../assets/images/bulles.png'),
-            name: "Bulle - Les Supers Nanas",
-            price: 0.75,
-            quantity: 0
-        },
-        {
-            image: require('../../assets/images/buttercup.png'),
-            name: "Rebelle - Les Supers Nanas",
-            price: 0.75,
-            quantity: 0
-        },
-        {
-            image: require('../../assets/images/lisa-simpson.png'),
-            name: "Lisa - Les Simpson",
-            price: 0.75,
-            quantity: 0
-        },
-        {
-            image: require('../../assets/images/rick-sanchez.png'),
-            name: "Rick Sanchez - Rick & Morty",
-            price: 0.75,
-            quantity: 0
-        },
-        {
-            image: require('../../assets/images/morty-smith.png'),
-            name: "Morty Smith - Rick & Morty",
-            price: 0.75,
-            quantity: 0
-        },
-        {
-            image: require('../../assets/images/summer-smith.png'),
-            name: "Summer Smith - Rick & Morty",
-            price: 0.75,
-            quantity: 0
-        },
-        {
-            image: require('../../assets/images/beth-smith.png'),
-            name: "Beth Smith - Rick & Morty",
-            price: 0.75,
-            quantity: 0
-        },
-        {
-            image: require('../../assets/images/jerry-smith.png'),
-            name: "Jerry Smith - Rick & Morty",
-            price: 0.75,
-            quantity: 0
-        },
-    ])
-
-    const { order, setOrderData } = Order()
+    const dispatch = useDispatch()
+    const products = useSelector((state) => state.product)
 
     const showTotalPrice = () => {
         let total = 0
@@ -81,9 +24,11 @@ export const OrderCard = ({ orderCard }) => {
     const showDetail = () => {
         return orderCard.images.map(
             (image) => {
+                const name = products.filter(p => p.id === image.id)[0].name
+
                 return (
-                    <Text key={image.key}>
-                        {image.quantity} x Sticker "{products[image.key].name}"
+                    <Text key={image.id}>
+                        {image.quantity} x Sticker "{name}"
                     </Text>
                 )
             }
@@ -91,14 +36,15 @@ export const OrderCard = ({ orderCard }) => {
     }
 
     const handleUpdateOrder = () => {
-        setOrderData('number', orderCard.number)
-        setOrderData('userUid', orderCard.userUid)
-        setOrderData('images', orderCard.images)
-        setOrderData('status', 'completed')
+        const updatedOrder = {
+            userUid: orderCard.userUid,
+            images: orderCard.images,
+            number: orderCard.number,
+            status: 'completed'
+        }
 
-        console.log(order)
-
-        updateOrder(order)
+        updateOrder(updatedOrder)
+        dispatch(updateStoredOrder(updatedOrder))
     }
 
     return (
@@ -121,7 +67,7 @@ export const styles = StyleSheet.create({
     orderCard: {
         borderRadius: 20,
         width: 300,
-        height: 200,
+        height: 'auto',
         paddingVertical: 15,
         paddingHorizontal: 20,
         marginBottom: 30,
@@ -146,7 +92,7 @@ export const styles = StyleSheet.create({
         backgroundColor: '#000',
         paddingVertical: 10,
         borderRadius: 50,
-        marginTop: 'auto',
+        marginTop: 10,
     },
 
     orderCardButtonText: {

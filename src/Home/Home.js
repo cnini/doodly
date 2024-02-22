@@ -2,106 +2,62 @@ import { Text, View, ScrollView, Pressable, Image } from "react-native"
 import { styles } from "./HomeStyleSheet"
 import { ProductCard } from "../Components/ProductCard"
 import { useState } from "react"
-import { auth } from "../../firebase"
 import { Order } from "../Model/Order"
 import { addOrder, getLastOrderNumber } from "../Repository/OrderRepository"
+import { useDispatch, useSelector } from "react-redux"
+import { updateQuantity } from "../Slices/ProductSlice"
+import { storeOrder } from "../Slices/OrderSlice"
+import { auth } from "../../firebase"
 
 export const Home = ({ navigation }) => {
-    const { order, setOrderData } = Order()
+    const dispatch = useDispatch()
+    const currentUser = useSelector((state) => state.currentUser)
+    const products = useSelector((state) => state.product)
 
-    const [products, setProducts] = useState([
-        {
-            image: require('../../assets/images/blossom.png'),
-            name: "Belle - Les Supers Nanas",
-            price: 0.75,
-            quantity: 0
-        },
-        {
-            image: require('../../assets/images/bulles.png'),
-            name: "Bulle - Les Supers Nanas",
-            price: 0.75,
-            quantity: 0
-        },
-        {
-            image: require('../../assets/images/buttercup.png'),
-            name: "Rebelle - Les Supers Nanas",
-            price: 0.75,
-            quantity: 0
-        },
-        {
-            image: require('../../assets/images/lisa-simpson.png'),
-            name: "Lisa - Les Simpson",
-            price: 0.75,
-            quantity: 0
-        },
-        {
-            image: require('../../assets/images/rick-sanchez.png'),
-            name: "Rick Sanchez - Rick & Morty",
-            price: 0.75,
-            quantity: 0
-        },
-        {
-            image: require('../../assets/images/morty-smith.png'),
-            name: "Morty Smith - Rick & Morty",
-            price: 0.75,
-            quantity: 0
-        },
-        {
-            image: require('../../assets/images/summer-smith.png'),
-            name: "Summer Smith - Rick & Morty",
-            price: 0.75,
-            quantity: 0
-        },
-        {
-            image: require('../../assets/images/beth-smith.png'),
-            name: "Beth Smith - Rick & Morty",
-            price: 0.75,
-            quantity: 0
-        },
-        {
-            image: require('../../assets/images/jerry-smith.png'),
-            name: "Jerry Smith - Rick & Morty",
-            price: 0.75,
-            quantity: 0
-        },
-    ])
+    const { order } = Order()
 
     const [totalCount, setTotalCount] = useState(0)
 
     const handleTotalCount = (productIndex, value) => {
-        products.map((product, index) => {
-            if (index === productIndex) {
-                return product.quantity = product.quantity + value
-            }
-        })
-
-        setProducts(products)
+        dispatch(updateQuantity({ productIndex: productIndex, newQuantity: value }))
         setTotalCount(previousTotalCount => previousTotalCount + value)
     }
 
     const handleCreateOrder = async () => {
         try {
-            setOrderData('userUid', auth.currentUser.uid);
-    
-            const lastOrderNumber = await getLastOrderNumber(auth.currentUser.uid)
-            
-            const newOrderNumber = '000' + (parseInt(lastOrderNumber, 10) + 1).toString();
-    
-            setOrderData('number', newOrderNumber)
-    
-            const images = products.filter(product => product.quantity > 0).map((product, index) => {
-                return { key: index, quantity: product.quantity, price: (product.quantity * product.price) }
-            })
-    
-            setOrderData('images', images)
-    
-            addOrder(order)
+            const newOrder = { ...order }
+
+            newOrder.userUid = currentUser.uid
+
+            const lastOrderNumber = await getLastOrderNumber(currentUser.uid)
+            const newOrderNumber = lastOrderNumber 
+                ? (parseInt(lastOrderNumber, 10) + 1).toString().padStart(3, '0')
+                : '0001'
+
+            newOrder.number = newOrderNumber
+
+            products
+            .filter(p => parseInt(p.quantity, 10) > 0)
+            .map(
+                product => {
+                    newOrder.images.push({ 
+                        id: product.id, 
+                        quantity: product.quantity, 
+                        price: (product.quantity * product.price) 
+                    })
+                }
+            )
+
+            addOrder(newOrder)
+            dispatch(storeOrder(newOrder))
     
             navigation.navigate('Cart')
         } catch (error) {
             console.error("Erreur lors de la création de la commande :", error)
         }
     }
+
+    const displayStyle = auth.currentUser !== null ? {} : { display: 'none' }
 
     return (
         <View style={styles.homeContainer}>
@@ -124,7 +80,7 @@ export const Home = ({ navigation }) => {
                 </View>
             </ScrollView>
 
-            <Pressable style={styles.homeButton} onPress={handleCreateOrder}>
+            <Pressable style={[styles.homeButton, displayStyle]} onPress={handleCreateOrder}>
                 <Text style={styles.homeButtonText}>Ajouter au panier ({ totalCount })</Text>
             </Pressable>
         </View>

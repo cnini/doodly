@@ -22,13 +22,15 @@ export const ProductCard = ({ productIndex, product, handleTotalCount }) => {
         })
     }
 
+    const displayStyle = auth.currentUser !== null ? {} : { display: 'none' }
+
     return (
         <View style={styles.productCard}>
             <Image style={styles.image} source={product.image}/>
             <Text style={styles.name}>{product.name}</Text>
             <Text style={styles.price}>{product.price}€ /sticker</Text>
 
-            <View style={styles.actions}>
+            <View style={[styles.actions, displayStyle]}>
                 <Pressable onPress={decrementCount} disabled={count === 0}>
                     <FontAwesome6 name="circle-minus" size={24} color={count === 0 ? "lightgray" : "black"} />
                 </Pressable>
@@ -47,7 +49,7 @@ export const styles = StyleSheet.create({
     productCard: {
         borderRadius: 20,
         width: 160,
-        height: 200,
+        height: 'auto',
         paddingVertical: 15,
         paddingHorizontal: 20,
         marginBottom: 30,
@@ -80,10 +82,10 @@ export const styles = StyleSheet.create({
     },
 
     actions: {
-        marginTop: 'auto',
+        marginTop: 20,
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
     },
 })

@@ -1,9 +1,13 @@
-// import { UserSlice } from "./src/Redux/UserSlice";
+import { currentUserSlice } from "./src/Slices/CurrentUserSlice";
+import { orderSlice } from "./src/Slices/OrderSlice";
+import { productSlice } from "./src/Slices/ProductSlice";
 
-// const { configureStore } = require("@reduxjs/toolkit");
+const { configureStore } = require("@reduxjs/toolkit");
 
-// export const store = configureStore({
-//     reducer: {
-//         user: UserSlice.reducer
-//     }
-// })
+export const store = configureStore({
+    reducer: {
+        product: productSlice.reducer,
+        currentUser: currentUserSlice.reducer,
+        order: orderSlice.reducer
+    }
+})

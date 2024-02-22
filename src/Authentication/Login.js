@@ -2,10 +2,16 @@ import { Text, View, Image, TextInput, Pressable,} from "react-native"
 import { styles } from "./LoginStyleSheet"
 import { Link } from '@react-navigation/native'
 import { useState } from "react"
+import { useDispatch } from "react-redux"
+import { setCurrentUser } from "../Slices/CurrentUserSlice"
+import { storeOrder } from "../Slices/OrderSlice"
 import { auth } from "../../firebase"
 import { getUserByUid } from "../Repository/UserRepository"
+import { getAllOrderByUserUid } from "../Repository/OrderRepository"
 
 export const Login = ({ navigation }) => {
+  const dispatch = useDispatch()
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -17,14 +23,20 @@ export const Login = ({ navigation }) => {
 
             getUserByUid(auth.currentUser.uid)
             .then((res) => {
+                dispatch(setCurrentUser(res))
                 console.log('Utilisateur trouvé : ' + res.email)
+            })
+
+            getAllOrderByUserUid(auth.currentUser.uid)
+            .then((res) => {
+              res.forEach(order => dispatch(storeOrder(order.data())))
             })
 
             navigation.navigate('Profile')
         })
         .catch((e) => console.log(e))
     }
-}
+  }
 
   return (
     <View style={styles.container}>

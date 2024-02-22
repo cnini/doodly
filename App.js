@@ -1,7 +1,11 @@
+import { store } from './redux';
 import { Navigation } from './src/Navigation/Navigation';
+import { Provider } from 'react-redux';
 
 export default function App() {
   return (
-    <Navigation />
+    <Provider store={store}>
+      <Navigation />
+    </Provider>
   );
 }
