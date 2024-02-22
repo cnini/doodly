@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
 
     link: {
         marginStart: 5,
-        color: "#974DFF",
+        color: "#d2bbf3",
     },
     container: {
         flex: 1,

@@ -2,16 +2,22 @@ import { StyleSheet } from "react-native"
 
 export const styles = StyleSheet.create({
     registryContainer: {
-        width: '100%',
-        paddingHorizontal: 50,
         flex: 1,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    backgroundImage: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
     },
 
     inputLabel: {
         fontSize: 12,
         textTransform: 'uppercase',
-        marginStart: 10
+        marginStart: 10,
+        textAlign: 'center'
     },
 
     inputBox: {
@@ -24,6 +30,20 @@ export const styles = StyleSheet.create({
         borderRadius: 20
     },
 
+    loginBtn: {
+        width: "100%",
+        borderRadius: 90,
+        height: 50,
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 30,
+        backgroundColor: "#d2bbf3",
+    },
+
+    loginText: {
+        color: "white",
+    },
+
     linkZone: {
         marginTop: 20,
         flexDirection: 'row',
@@ -33,6 +53,6 @@ export const styles = StyleSheet.create({
 
     link: {
         marginStart: 5,
-        color: 'purple'
+        color: '#d2bbf3'
     },
 })
