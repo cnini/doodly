@@ -1,12 +1,11 @@
 import { StyleSheet, Image, View, Text, Pressable } from "react-native"
-import { Order } from "../Model/Order"
 import { updateOrder } from "../Repository/OrderRepository"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { updateStoredOrder } from "../Slices/OrderSlice"
 
 export const OrderCard = ({ orderCard }) => {
+    const dispatch = useDispatch()
     const products = useSelector((state) => state.product)
-
-    const { order, setOrderData } = Order()
 
     const showTotalPrice = () => {
         let total = 0
@@ -37,14 +36,15 @@ export const OrderCard = ({ orderCard }) => {
     }
 
     const handleUpdateOrder = () => {
-        setOrderData('number', orderCard.number)
-        setOrderData('userUid', orderCard.userUid)
-        setOrderData('images', orderCard.images)
-        setOrderData('status', 'completed')
+        const updatedOrder = {
+            userUid: orderCard.userUid,
+            images: orderCard.images,
+            number: orderCard.number,
+            status: 'completed'
+        }
 
-        console.log(order)
-
-        updateOrder(order)
+        updateOrder(updatedOrder)
+        dispatch(updateStoredOrder(updatedOrder))
     }
 
     return (

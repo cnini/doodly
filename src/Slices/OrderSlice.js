@@ -9,8 +9,19 @@ export const orderSlice = createSlice({
         },
         resetOrders: (state, action) => {
             return []
+        },
+        updateStoredOrder: (state, action) => {
+            state.forEach(
+                el => {
+                    if (el.number === action.payload.number) {
+                        return { ...el, status: action.payload.status }
+                    }
+
+                    return el
+                }
+            )
         }
     }
 })
 
-export const { storeOrder, resetOrders } = orderSlice.actions
+export const { storeOrder, resetOrders, updateStoredOrder } = orderSlice.actions
