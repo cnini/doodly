@@ -3,7 +3,7 @@ import { styles } from "./CartStyleSheet"
 import { useEffect } from "react"
 import { useState } from "react"
 import { OrderCard } from "../Components/OrderCard"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 
 export const Cart = () => {
     const currentUser = useSelector(state => state.currentUser)
