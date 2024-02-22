@@ -2,13 +2,8 @@ import { Text, View, ScrollView, Image } from "react-native"
 import { styles } from "./CartStyleSheet"
 import { useEffect } from "react"
 import { useState } from "react"
-import { getAllOrderByUserUid } from "../Repository/OrderRepository"
-import { auth } from "../../firebase"
 import { OrderCard } from "../Components/OrderCard"
 import { useDispatch, useSelector } from "react-redux"
-import { setCurrentUser } from "../Slices/CurrentUserSlice"
-import { storeOrder } from "../Slices/OrderSlice"
-import { getUserByUid } from "../Repository/UserRepository"
 
 export const Cart = () => {
     const currentUser = useSelector(state => state.currentUser)
