@@ -1,16 +1,20 @@
 import { Text, View, Pressable, Image } from "react-native"
 import { styles } from "./ProfileStyleSheet"
 import { auth } from "../../firebase"
-import { useState } from "react"
-import { useEffect } from "react"
-import { getUserByUid } from "../Repository/UserRepository"
+import { useDispatch, useSelector } from "react-redux"
+import { resetCurrentUser } from "../Slices/CurrentUserSlice"
+import { resetOrders } from "../Slices/OrderSlice"
 
 export const Profile = ({ navigation }) => {
-    const [user, setUser] = useState()
+    const dispatch = useDispatch()
+    const currentUser = useSelector(state => state.currentUser)
 
     const handleSignout = () => {
         auth.signOut()
             .then(() => {
+                dispatch(resetCurrentUser())
+                dispatch(resetOrders())
+                
                 console.log("Utilisateur déconnecté")
 
                 navigation.navigate('Login')
@@ -18,25 +22,22 @@ export const Profile = ({ navigation }) => {
             .catch((e) => console.log(e)) 
     }
 
-    useEffect(() => {
-        getUserByUid(auth.currentUser.uid)
-        .then(res => setUser(res))
-    }, [])
-
     return (
         <View style={styles.profileContainer}>
             <Image style={styles.backgroundImage} source={require("../../assets/login.png")}/>
 
             {
-                user !== undefined ? (
-                    <Text>{user.firstname + ' ' + user.lastname}</Text>
+                currentUser !== undefined ? (
+                    <View>
+                        <Text>{currentUser.firstname + ' ' + currentUser.lastname}</Text>
+                        <Pressable style={styles.profileButton} onPress={handleSignout}>
+                            <Text style={styles.profileButtonText}>Se déconnecter</Text>
+                        </Pressable>
+                    </View>
                 ) : (
                     <Text>Invité</Text>
                 )
             }
-            <Pressable style={styles.profileButton} onPress={handleSignout}>
-                <Text style={styles.profileButtonText}>Se déconnecter</Text>
-            </Pressable>
         </View>
     )
 }

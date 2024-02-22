@@ -1,12 +1,17 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { NavigationContainer, useTheme } from "@react-navigation/native"
 import { FontAwesome, FontAwesome6 } from '@expo/vector-icons'
+import { useDispatch } from "react-redux"
 
 import { Home } from "../Home/Home"
 import { Login } from "../Authentication/Login"
 import { Registry } from "../Authentication/Registry"
 import { Profile } from "../Profile/Profile"
 import { Cart } from "../Cart/Cart"
+import { useEffect } from "react"
+import { setCurrentUser } from "../Slices/CurrentUserSlice"
+import { getUserByUid } from "../Repository/UserRepository"
+import { auth } from "../../firebase"
 
 const Tab = createBottomTabNavigator()
 
@@ -37,6 +42,16 @@ const AuthenticationTabs = () => {
 export const Navigation = () => {
     const theme = useTheme()
     theme.colors.secondaryContainer = "transparent"
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (auth.currentUser) {
+            dispatch(setCurrentUser(getUserByUid(auth.currentUser.uid).then(res => res)))
+        } else {
+            dispatch(setCurrentUser({}))
+        }
+    }, [])
 
     return (
         <NavigationContainer>
