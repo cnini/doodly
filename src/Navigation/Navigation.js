@@ -59,7 +59,7 @@ export const Navigation = () => {
                         tabBarIcon: ({ color }) => (
                             <FontAwesome6 name="house" color={color} size={18} />
                         ),
-                        tabBarActiveTintColor: "purple",
+                        tabBarActiveTintColor: "#d2bbf3",
                         tabBarInactiveTintColor: "gray"
                     }}
                 />
@@ -73,7 +73,7 @@ export const Navigation = () => {
                         tabBarIcon: ({ color }) => (
                             <FontAwesome name="shopping-basket" color={color} size={18} />
                         ),
-                        tabBarActiveTintColor: "purple",
+                        tabBarActiveTintColor: "#d2bbf3",
                         tabBarInactiveTintColor: "gray"
                     }}
                 />
@@ -87,7 +87,7 @@ export const Navigation = () => {
                         tabBarIcon: ({ color }) => (
                             <FontAwesome name="user-circle" color={color} size={18} />
                         ),
-                        tabBarActiveTintColor: "purple",
+                        tabBarActiveTintColor: "#d2bbf3",
                         tabBarInactiveTintColor: "gray",
                     }}
                 />
