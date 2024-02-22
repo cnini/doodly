@@ -7,12 +7,12 @@ import { addOrder, getLastOrderNumber } from "../Repository/OrderRepository"
 import { useDispatch, useSelector } from "react-redux"
 import { updateQuantity } from "../Slices/ProductSlice"
 import { storeOrder } from "../Slices/OrderSlice"
+import { auth } from "../../firebase"
 
 export const Home = ({ navigation }) => {
     const dispatch = useDispatch()
     const currentUser = useSelector((state) => state.currentUser)
     const products = useSelector((state) => state.product)
-    const orders = useSelector((state) => state.order)
 
     const { order } = Order()
 
@@ -57,6 +57,8 @@ export const Home = ({ navigation }) => {
         }
     }
 
+    const displayStyle = auth.currentUser !== null ? {} : { display: 'none' }
+
     return (
         <View style={styles.homeContainer}>
             <Image style={styles.backgroundImage} source={require("../../assets/login.png")}/>
@@ -78,7 +80,7 @@ export const Home = ({ navigation }) => {
                 </View>
             </ScrollView>
 
-            <Pressable style={styles.homeButton} onPress={handleCreateOrder}>
+            <Pressable style={[styles.homeButton, displayStyle]} onPress={handleCreateOrder}>
                 <Text style={styles.homeButtonText}>Ajouter au panier ({ totalCount })</Text>
             </Pressable>
         </View>
